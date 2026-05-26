@@ -209,7 +209,7 @@ export default function Home() {
         onClose={handleCloseModal}
         title={selectedImage ? 'Editar imagen' : 'Nueva imagen'}
       >
-        <ImageForm
+      <ImageForm
           onSubmit={handleCreateOrUpdate}
           initialData={selectedImage || undefined}
           isLoading={isLoading}

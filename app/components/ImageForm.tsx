@@ -134,7 +134,7 @@ export function ImageForm({ onSubmit, initialData, isLoading }: ImageFormProps) 
         {isLoading ? (
           <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
         ) : initialData ? (
-          'Actualizar datos'
+          'Actualizar Datos'
         ) : (
           'Crear imagen'
         )}
