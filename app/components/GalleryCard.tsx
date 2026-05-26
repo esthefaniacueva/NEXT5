@@ -1,7 +1,9 @@
 'use strict';
 
-import { Edit, Trash2 } from 'lucide-react';
+import { useState } from 'react';
+import { Edit, Trash2, X } from 'lucide-react';
 import { Image } from '@/types';
+import { motion } from 'framer-motion';
 
 interface GalleryCardProps {
   image: Image;
@@ -11,16 +13,20 @@ interface GalleryCardProps {
 }
 
 export function GalleryCard({ image, onEdit, onDelete, isDeleting }: GalleryCardProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
-    <div className="group relative w-full bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm transition-all duration-300 hover:shadow-md">
-      
-      {/* CONTENEDOR DE LA IMAGEN */}
-      <div className="relative aspect-[4/3] w-full bg-gray-50 overflow-hidden">
-      <img 
-        src={image.image_url} 
-        alt={image.title}
-        className="w-full h-full object-contain group-hover:scale-105 active:scale-[2.5] active:z-50 active:fixed active:top-1/2 active:left-1/2 active:-translate-x-1/2 active:-translate-y-1/2 active:rounded-xl active:shadow-2xl transition-all duration-300 cursor-zoom-in"
-      />
+    <>
+      <div className="group relative w-full bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm transition-all duration-300 hover:shadow-md">
+        
+        {/* CONTENEDOR DE LA IMAGEN */}
+        <div className="relative aspect-[4/3] w-full bg-gray-50 overflow-hidden">
+        <img 
+          src={image.image_url} 
+          alt={image.title}
+          onClick={() => setIsModalOpen(true)}
+          className="w-full h-full object-contain group-hover:scale-105 transition-all duration-300 cursor-zoom-in"
+        />
 
         {/* CONTENEDOR FLOTANTE PARA LOS BOTONES (Aparece solo en HOVER) */}
         <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-start justify-end p-3 gap-2">
@@ -59,5 +65,55 @@ export function GalleryCard({ image, onEdit, onDelete, isDeleting }: GalleryCard
         </p>
       </div>
     </div>
+
+    {/* MODAL PARA VER IMAGEN COMPLETA */}
+    {isModalOpen && (
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        {/* FONDO OSCURECIDO */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setIsModalOpen(false)}
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+        />
+        
+        {/* MODAL CON LA IMAGEN */}
+        <motion.div
+          initial={{ scale: 0.95, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.95, opacity: 0 }}
+          className="relative z-10 max-w-4xl max-h-[85vh] bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col"
+        >
+          {/* HEADER DEL MODAL */}
+          <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+            <h2 className="text-lg font-bold text-gray-800">{image.title}</h2>
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="text-gray-400 hover:text-gray-600 transition-colors p-1 hover:bg-gray-100 rounded-lg"
+            >
+              <X size={20} />
+            </button>
+          </div>
+
+          {/* CONTENEDOR DE LA IMAGEN */}
+          <div className="flex-1 overflow-auto flex items-center justify-center bg-gray-50 p-6">
+            <img
+              src={image.image_url}
+              alt={image.title}
+              className="max-w-full max-h-full object-contain"
+            />
+          </div>
+
+          {/* DESCRIPCIÓN */}
+          {image.description && (
+            <div className="px-6 py-4 border-t border-gray-100 bg-gray-50/50">
+              <p className="text-sm text-gray-600">{image.description}</p>
+            </div>
+          )}
+        </motion.div>
+      </div>
+    )}
+    </>
   );
 }

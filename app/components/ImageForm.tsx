@@ -71,11 +71,11 @@ export function ImageForm({ onSubmit, initialData, isLoading }: ImageFormProps) 
           className="border-2 border-dashed border-blue-300 rounded-xl p-6 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-blue-50/30 transition-colors bg-gray-50/50 min-h-[160px] relative overflow-hidden"
         >
           {preview ? (
-            <div className="absolute inset-0 w-full h-full bg-gray-100">
+            <div className="absolute inset-0 w-full h-full bg-gray-100 flex items-center justify-center">
               <img
                 src={preview}
                 alt="Preview"
-                className="w-full h-full object-cover"
+                className="max-w-full max-h-full object-contain"
               />
               <div className="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-medium">
                 Cambiar imagen
